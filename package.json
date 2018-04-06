@@ -3,9 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "muicss": "^0.9.39-rc1",
+    "prop-types": "^15.6.1",
     "react": "^16.3.1",
     "react-dom": "^16.3.1",
-    "react-scripts": "1.1.4"
+    "react-redux": "^5.0.7",
+    "react-scripts": "1.1.4",
+    "redux": "^3.7.2",
+    "redux-devtools-extension": "^2.13.2"
   },
   "scripts": {
     "start": "BROWSER=none react-scripts start",
@@ -21,6 +26,9 @@
     "eslint-plugin-node": "^6.0.1",
     "eslint-plugin-promise": "^3.7.0",
     "eslint-plugin-react": "^7.7.0",
-    "eslint-plugin-standard": "^3.0.1"
+    "eslint-plugin-standard": "^3.0.1",
+    "stylelint": "^9.2.0",
+    "stylelint-config-idiomatic-css": "^1.0.5",
+    "stylelint-config-standard": "^18.2.0"
   }
 }
