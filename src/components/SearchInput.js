@@ -7,34 +7,45 @@ import * as S from '../selectors'
 import Button from 'muicss/lib/react/button'
 import Input from 'muicss/lib/react/input'
 import Panel from 'muicss/lib/react/panel'
+import Option from 'muicss/lib/react/option'
+import Select from 'muicss/lib/react/select'
+
+const defaultIssuesAmount = 5
 
 class SearchInput extends React.Component {
   constructor () {
     super()
+
     this.state = {
       userName: 'facebook',
       repoName: 'react',
+      peerPageAmount: defaultIssuesAmount,
     }
+
+    this.onSelectChange = this.onSelectChange.bind(this)
   }
 
   onChange (evt, stateName) {
     this.setState({ [stateName]: evt.target.value })
   }
 
-  onSubmit (evt, fetchData, userName, repoName) {
+  onSubmit (evt, fetchData, userName, repoName, peerPageAmount) {
     evt.preventDefault()
-    fetchData(userName, repoName)
+    fetchData(userName, repoName, peerPageAmount)
+  }
+
+  onSelectChange (evt) {
+    this.setState({ peerPageAmount: evt.target.value })
   }
 
   render () {
-    const { userName, repoName } = this.state
-    const { fetchData, issues } = this.props
-    const { fetching, data } = issues
+    const { userName, repoName, peerPageAmount } = this.state
+    const { fetchData, issues: { fetching, data } } = this.props
 
     return (
       <div>
         <Panel>
-          <form onSubmit={evt => this.onSubmit(evt, fetchData, userName, repoName)}>
+          <form onSubmit={evt => this.onSubmit(evt, fetchData, userName, repoName, peerPageAmount)}>
             <div>
               <Input
                 label='enter user name'
@@ -52,13 +63,33 @@ class SearchInput extends React.Component {
               />
             </div>
             <div>
+              <Select
+                name='amount'
+                label='Select Amount'
+                defaultValue={defaultIssuesAmount}
+                onChange={this.onSelectChange}
+              >
+                <Option value={defaultIssuesAmount} label={defaultIssuesAmount} />
+                <Option value='25' label='25' />
+                <Option value='50' label='50' />
+                <Option value='100' label='100' />
+              </Select>
+            </div>
+            <div>
               <Button color='primary' disabled={fetching} type='submit'>
                 Search
               </Button>
             </div>
           </form>
         </Panel>
-        {data && <SearchResultList data={data} />}
+        {data && (
+          <div>
+            <Panel>
+              <div className='mui--text-dark-secondary'>Founded: {data.length} issue</div>
+            </Panel>
+            <SearchResultList data={data} />
+          </div>
+        )}
       </div>
     )
   }
