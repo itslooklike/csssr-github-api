@@ -1,32 +1,35 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import SearchResultList from './SearchResultList'
 import * as A from '../actions'
 import * as S from '../selectors'
-
 import Button from 'muicss/lib/react/button'
 import Input from 'muicss/lib/react/input'
 import Panel from 'muicss/lib/react/panel'
 
 class SearchInput extends React.Component {
-  state = {
-    userName: 'facebook',
-    repoName: 'react',
+  constructor () {
+    super()
+    this.state = {
+      userName: 'facebook',
+      repoName: 'react',
+    }
   }
 
-  onChange(evt, stateName) {
+  onChange (evt, stateName) {
     this.setState({ [stateName]: evt.target.value })
   }
 
-  onSubmit(evt, fetchData, userName, repoName) {
+  onSubmit (evt, fetchData, userName, repoName) {
     evt.preventDefault()
     fetchData(userName, repoName)
   }
 
-  render() {
+  render () {
+    const { userName, repoName } = this.state
     const { fetchData, issues } = this.props
     const { fetching, data } = issues
-    const { userName, repoName } = this.state
 
     return (
       <div>
@@ -34,7 +37,7 @@ class SearchInput extends React.Component {
           <form onSubmit={evt => this.onSubmit(evt, fetchData, userName, repoName)}>
             <div>
               <Input
-                label="enter user name"
+                label='enter user name'
                 floatingLabel
                 value={userName}
                 onChange={evt => this.onChange(evt, 'userName')}
@@ -42,33 +45,20 @@ class SearchInput extends React.Component {
             </div>
             <div>
               <Input
-                label="enter repo name"
+                label='enter repo name'
                 floatingLabel
                 value={repoName}
                 onChange={evt => this.onChange(evt, 'repoName')}
               />
             </div>
             <div>
-              <Button color="primary" disabled={fetching} type="submit">
+              <Button color='primary' disabled={fetching} type='submit'>
                 Search
               </Button>
             </div>
           </form>
         </Panel>
-        {data && (
-          <div>
-            {data.map((item, index) => {
-              const { number, title, created_at } = item
-              return (
-                <Panel key={index}>
-                  <span>{number}</span>
-                  <span>{title}</span>
-                  <span>{created_at}</span>
-                </Panel>
-              )
-            })}
-          </div>
-        )}
+        {data && <SearchResultList data={data} />}
       </div>
     )
   }
