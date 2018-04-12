@@ -9,21 +9,51 @@ import Input from 'muicss/lib/react/input'
 import Panel from 'muicss/lib/react/panel'
 
 class SearchInput extends React.Component {
-  render () {
+  state = {
+    userName: 'facebook',
+    repoName: 'react',
+  }
+
+  onChange(evt, stateName) {
+    this.setState({ [stateName]: evt.target.value })
+  }
+
+  onSubmit(evt, fetchData, userName, repoName) {
+    evt.preventDefault()
+    fetchData(userName, repoName)
+  }
+
+  render() {
     const { fetchData, issues } = this.props
     const { fetching, data } = issues
+    const { userName, repoName } = this.state
 
     return (
       <div>
         <Panel>
-          <div>
-            <Input label='enter repo name' floatingLabel />
-          </div>
-          <div>
-            <Button color='primary' onClick={fetchData} disabled={fetching}>
-              Search
-            </Button>
-          </div>
+          <form onSubmit={evt => this.onSubmit(evt, fetchData, userName, repoName)}>
+            <div>
+              <Input
+                label="enter user name"
+                floatingLabel
+                value={userName}
+                onChange={evt => this.onChange(evt, 'userName')}
+              />
+            </div>
+            <div>
+              <Input
+                label="enter repo name"
+                floatingLabel
+                value={repoName}
+                onChange={evt => this.onChange(evt, 'repoName')}
+              />
+            </div>
+            <div>
+              <Button color="primary" disabled={fetching} type="submit">
+                Search
+              </Button>
+            </div>
+          </form>
         </Panel>
         {data && (
           <div>
@@ -54,7 +84,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  fetchData: A.onSearchStart(dispatch),
+  fetchData: A.getIssues(dispatch),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchInput)

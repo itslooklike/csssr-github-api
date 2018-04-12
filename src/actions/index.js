@@ -1,17 +1,18 @@
+import axios from 'axios'
 import { ISSUES_FETCHING_START, ISSUES_FETCHING_END } from '../constants/ActionTypes'
-const api = 'https://api.github.com/repos/facebook/react/issues'
+import { API_GITHUB } from '../constants/Api'
 
-export const onSearchStart = dispatch => async () => {
+export const getIssues = dispatch => async (user, rep) => {
+  const url = API_GITHUB + `/repos/${user}/${rep}/issues`
+
   dispatch({
-    type: ISSUES_FETCHING_START
+    type: ISSUES_FETCHING_START,
   })
 
-  const result = await fetch(api)
-  const json = await result.json()
-  console.log(json)
+  const { data } = await axios.get(url)
 
   dispatch({
     type: ISSUES_FETCHING_END,
-    payload: json
+    payload: data,
   })
 }
