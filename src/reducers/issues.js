@@ -2,7 +2,7 @@ import { ISSUES_FETCHING_START, ISSUES_FETCHING_END } from '../constants/ActionT
 
 const initialState = {
   fetching: false,
-  data: null
+  data: null,
 }
 
 const issues = (state = initialState, { type, payload }) => {

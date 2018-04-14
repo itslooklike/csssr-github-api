@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import parse from 'date-fns/parse'
 import format from 'date-fns/format'
@@ -32,17 +33,24 @@ const SearchResultList = props => {
 
   return (
     <div>
-      {data.map((item, index) => {
-        const { number, title, created_at: created, id } = item
+      <Panel>
+        <div className='mui--text-dark-secondary'>Founded: {data.length} issue</div>
+      </Panel>
+      <div>
+        {data.map((item, index) => {
+          const { number, title, created_at: created, id } = item
 
-        return (
-          <Panel key={id}>
-            <IssueNumber>{number}</IssueNumber>
-            <IssueText>{title}</IssueText>
-            <IssueDate>{dateFormat(created)}</IssueDate>
-          </Panel>
-        )
-      })}
+          return (
+            <Link to={`/issue/${number}`} key={id}>
+              <Panel>
+                <IssueNumber>{number}</IssueNumber>
+                <IssueText>{title}</IssueText>
+                <IssueDate>{dateFormat(created)}</IssueDate>
+              </Panel>
+            </Link>
+          )
+        })}
+      </div>
     </div>
   )
 }

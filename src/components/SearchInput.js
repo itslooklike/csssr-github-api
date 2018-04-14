@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import SearchResultList from './SearchResultList'
 import * as A from '../actions'
 import * as S from '../selectors'
 import Button from 'muicss/lib/react/button'
@@ -40,7 +39,7 @@ class SearchInput extends React.Component {
 
   render () {
     const { userName, repoName, peerPageAmount } = this.state
-    const { fetchData, issues: { fetching, data } } = this.props
+    const { fetchData, issues: { fetching } } = this.props
 
     return (
       <div>
@@ -82,14 +81,6 @@ class SearchInput extends React.Component {
             </div>
           </form>
         </Panel>
-        {data && (
-          <div>
-            <Panel>
-              <div className='mui--text-dark-secondary'>Founded: {data.length} issue</div>
-            </Panel>
-            <SearchResultList data={data} />
-          </div>
-        )}
       </div>
     )
   }
