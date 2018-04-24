@@ -1,16 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import idx from 'idx'
 import { connect } from 'react-redux'
-
 import Button from 'muicss/lib/react/button'
 import Input from 'muicss/lib/react/input'
 import Panel from 'muicss/lib/react/panel'
 import Option from 'muicss/lib/react/option'
 import Select from 'muicss/lib/react/select'
-
 import SearchResultList from './SearchResultList'
-
 import * as A from '../actions'
 import * as S from '../selectors'
 
@@ -21,21 +17,26 @@ class SearchInput extends React.Component {
     super()
 
     this.state = {
-      userName: 'facebook',
-      repoName: 'react',
       peerPageAmount: defaultIssuesAmount,
     }
 
     this.onSelectChange = this.onSelectChange.bind(this)
   }
 
-  onChange (evt, stateName) {
-    this.setState({ [stateName]: evt.target.value })
+  onChange (evt, type) {
+    const { setUserName, setRepoName } = this.props
+    const { value } = evt.target
+
+    if (type === 'user') {
+      setUserName(value)
+    } else if (type === 'repo') {
+      setRepoName(value)
+    }
   }
 
-  onSubmit (evt, fetchData, userName, repoName, peerPageAmount) {
+  onSubmit (evt, getIssues, userName, repoName, peerPageAmount) {
     evt.preventDefault()
-    fetchData(userName, repoName, peerPageAmount)
+    getIssues(userName, repoName, peerPageAmount)
   }
 
   onSelectChange (evt) {
@@ -43,20 +44,20 @@ class SearchInput extends React.Component {
   }
 
   render () {
-    const { userName, repoName, peerPageAmount } = this.state
-    const { fetchData } = this.props
+    const { peerPageAmount } = this.state
+    const { userName, repoName, getIssues } = this.props
     const { fetching, data } = this.props.issues
 
     return (
       <div>
         <Panel>
-          <form onSubmit={evt => this.onSubmit(evt, fetchData, userName, repoName, peerPageAmount)}>
+          <form onSubmit={evt => this.onSubmit(evt, getIssues, userName, repoName, peerPageAmount)}>
             <div>
               <Input
                 label='enter user name'
                 floatingLabel
                 value={userName}
-                onChange={evt => this.onChange(evt, 'userName')}
+                onChange={evt => this.onChange(evt, 'user')}
               />
             </div>
             <div>
@@ -64,7 +65,7 @@ class SearchInput extends React.Component {
                 label='enter repo name'
                 floatingLabel
                 value={repoName}
-                onChange={evt => this.onChange(evt, 'repoName')}
+                onChange={evt => this.onChange(evt, 'repo')}
               />
             </div>
             <div>
@@ -95,16 +96,24 @@ class SearchInput extends React.Component {
 }
 
 SearchInput.propTypes = {
-  fetchData: PropTypes.func,
+  userName: PropTypes.string,
+  repoName: PropTypes.string,
   issues: PropTypes.object,
+  setUserName: PropTypes.func,
+  setRepoName: PropTypes.func,
+  getIssues: PropTypes.func,
 }
 
-const mapStateToProps = state => ({
+const MSTP = state => ({
+  userName: S.userName(state),
+  repoName: S.repoName(state),
   issues: S.issues(state),
 })
 
-const mapDispatchToProps = dispatch => ({
-  fetchData: A.getIssues(dispatch),
+const MDTP = dispatch => ({
+  setUserName: A.setUserName(dispatch),
+  setRepoName: A.setRepoName(dispatch),
+  getIssues: A.getIssues(dispatch),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(SearchInput)
+export default connect(MSTP, MDTP)(SearchInput)
