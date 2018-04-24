@@ -16,8 +16,6 @@ export const getIssues = dispatch => async (user, rep, amount) => {
 
   const { data } = await axios.get(url)
 
-  console.log(data)
-
   dispatch({
     type: ISSUES_FETCHING_END,
     payload: data,
@@ -32,8 +30,6 @@ export const getSingleIssue = dispatch => async (user, rep, issueNumber) => {
   })
 
   const { data } = await axios.get(url)
-
-  console.log(data)
 
   dispatch({
     type: SINGLE_ISSUE_FETCHING_END,

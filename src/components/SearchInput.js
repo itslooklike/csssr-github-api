@@ -1,13 +1,18 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import idx from 'idx'
 import { connect } from 'react-redux'
-import * as A from '../actions'
-import * as S from '../selectors'
+
 import Button from 'muicss/lib/react/button'
 import Input from 'muicss/lib/react/input'
 import Panel from 'muicss/lib/react/panel'
 import Option from 'muicss/lib/react/option'
 import Select from 'muicss/lib/react/select'
+
+import SearchResultList from './SearchResultList'
+
+import * as A from '../actions'
+import * as S from '../selectors'
 
 const defaultIssuesAmount = 5
 
@@ -39,7 +44,8 @@ class SearchInput extends React.Component {
 
   render () {
     const { userName, repoName, peerPageAmount } = this.state
-    const { fetchData, issues: { fetching } } = this.props
+    const { fetchData } = this.props
+    const { fetching, data } = this.props.issues
 
     return (
       <div>
@@ -81,6 +87,8 @@ class SearchInput extends React.Component {
             </div>
           </form>
         </Panel>
+
+        {data && <SearchResultList data={data} />}
       </div>
     )
   }

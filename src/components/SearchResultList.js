@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import parse from 'date-fns/parse'
 import format from 'date-fns/format'
+
 import Panel from 'muicss/lib/react/panel'
 
 const IssueNumber = styled.div`
@@ -56,7 +57,7 @@ const SearchResultList = props => {
 }
 
 SearchResultList.propTypes = {
-  data: PropTypes.array,
+  data: PropTypes.object,
 }
 
 export default SearchResultList
