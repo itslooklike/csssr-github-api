@@ -49,6 +49,6 @@ export const getSingleIssue = dispatch => async (user, rep, issueNumber) => {
 
   dispatch({
     type: SINGLE_ISSUE_FETCHING_END,
-    payload: data,
+    payload: { [issueNumber]: data },
   })
 }

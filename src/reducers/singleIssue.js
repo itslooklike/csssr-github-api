@@ -10,7 +10,7 @@ const singleIssue = (state = initialState, { type, payload }) => {
     case SINGLE_ISSUE_FETCHING_START:
       return { ...state, fetching: true }
     case SINGLE_ISSUE_FETCHING_END:
-      return { ...state, fetching: false, data: payload }
+      return { ...state, fetching: false, data: { ...state.data, ...payload } }
     default:
       return state
   }
