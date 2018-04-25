@@ -7,6 +7,7 @@ import Panel from 'muicss/lib/react/panel'
 import Option from 'muicss/lib/react/option'
 import Select from 'muicss/lib/react/select'
 import SearchResultList from './SearchResultList'
+import Paginator from './Paginator'
 import * as A from '../actions'
 import * as S from '../selectors'
 
@@ -46,7 +47,8 @@ class SearchInput extends React.Component {
   render () {
     const { peerPageAmount } = this.state
     const { userName, repoName, getIssues } = this.props
-    const { fetching, data } = this.props.issues
+    const { fetching, data, pagination } = this.props.issues
+    const isPagNotEmpty = Object.keys(pagination).length > 0
 
     return (
       <div>
@@ -89,6 +91,8 @@ class SearchInput extends React.Component {
           </form>
         </Panel>
 
+        {isPagNotEmpty && <Paginator peerPageAmount={peerPageAmount} />}
+
         {data && <SearchResultList data={data} />}
       </div>
     )
@@ -104,16 +108,17 @@ SearchInput.propTypes = {
   getIssues: PropTypes.func,
 }
 
-const MSTP = state => ({
+const mapState = state => ({
   userName: S.userName(state),
   repoName: S.repoName(state),
   issues: S.issues(state),
+  pagination: S.pagination(state),
 })
 
-const MDTP = dispatch => ({
+const mapDispatch = dispatch => ({
   setUserName: A.setUserName(dispatch),
   setRepoName: A.setRepoName(dispatch),
   getIssues: A.getIssues(dispatch),
 })
 
-export default connect(MSTP, MDTP)(SearchInput)
+export default connect(mapState, mapDispatch)(SearchInput)

@@ -80,14 +80,14 @@ SearchResultIssue.propTypes = {
   getSingleIssue: PropTypes.func,
 }
 
-const MSTP = state => ({
+const mapState = state => ({
   userName: S.userName(state),
   repoName: S.repoName(state),
   singleIssue: S.singleIssue(state),
 })
 
-const MDTP = dispatch => ({
+const mapDispatch = dispatch => ({
   getSingleIssue: A.getSingleIssue(dispatch),
 })
 
-export default connect(MSTP, MDTP)(SearchResultIssue)
+export default connect(mapState, mapDispatch)(SearchResultIssue)

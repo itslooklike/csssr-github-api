@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Link } from 'react-router-dom'
+import { Link as _Link } from 'react-router-dom'
 import styled from 'styled-components'
 import parse from 'date-fns/parse'
 import format from 'date-fns/format'
@@ -23,9 +23,16 @@ const IssueDate = styled.div`
   font-weight: bold;
 `
 
+const Link = styled(_Link)`
+  :hover {
+    text-decoration: unset;
+  }
+`
+
 const dateFormat = date => {
   const jsDate = parse(date)
   const formatedDate = format(jsDate, 'YY/MM/DD HH:mm')
+
   return formatedDate
 }
 
@@ -35,7 +42,7 @@ const SearchResultList = props => {
   return (
     <div>
       <Panel>
-        <div className='mui--text-dark-secondary'>Founded: {data.length} issue</div>
+        <div className='mui--text-dark-secondary'>Amount: {data.length} issue</div>
       </Panel>
       <div>
         {data.map((item, index) => {

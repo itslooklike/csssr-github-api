@@ -1,4 +1,5 @@
 import axios from 'axios'
+import pagiParser from 'github-pagination-parser'
 import { API_GITHUB } from '../constants/Api'
 import {
   SET_REPO_USERNAME,
@@ -23,18 +24,21 @@ export const setRepoName = dispatch => repoName => {
   })
 }
 
-export const getIssues = dispatch => async (user, rep, amount) => {
-  const url = API_GITHUB + `/repos/${user}/${rep}/issues?per_page=${amount}`
+export const getIssues = dispatch => async (user, rep, amount, page) => {
+  const url =
+    API_GITHUB + `/repos/${user}/${rep}/issues?per_page=${amount}${page ? `&page=${page}` : ``}`
 
   dispatch({
     type: ISSUES_FETCHING_START,
   })
 
-  const { data } = await axios.get(url)
+  const resp = await axios.get(url)
+  const { data } = resp
+  const pagination = pagiParser(resp.headers.link)
 
   dispatch({
     type: ISSUES_FETCHING_END,
-    payload: data,
+    payload: { data, pagination },
   })
 }
 
