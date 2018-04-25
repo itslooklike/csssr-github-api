@@ -57,7 +57,7 @@ const SearchResultList = props => {
 }
 
 SearchResultList.propTypes = {
-  data: PropTypes.object,
+  data: PropTypes.array,
 }
 
 export default SearchResultList
