@@ -65,7 +65,7 @@ Paginator.propTypes = {
   userName: PropTypes.string,
   repoName: PropTypes.string,
   pagination: PropTypes.object,
-  peerPageAmount: PropTypes.number,
+  peerPageAmount: PropTypes.string,
   getIssues: PropTypes.func,
   issues: PropTypes.object,
 }
