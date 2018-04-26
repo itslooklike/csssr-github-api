@@ -3,3 +3,5 @@ export const repoName = state => state.repo.repoName
 export const issues = state => state.issues
 export const pagination = state => state.issues.pagination
 export const singleIssue = state => state.singleIssue
+export const searchUser = state => state.searchUser
+export const searchRepo = state => state.searchRepo

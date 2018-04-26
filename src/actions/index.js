@@ -61,7 +61,7 @@ export const getSingleIssue = dispatch => async (user, rep, issueNumber) => {
   })
 }
 
-export const searchUser = dispatch => async user => {
+export const getSearchUser = dispatch => async user => {
   const url = API_GITHUB + `/search/users?q=${user}`
 
   dispatch({
@@ -78,7 +78,7 @@ export const searchUser = dispatch => async user => {
   })
 }
 
-export const searchRepo = dispatch => async repo => {
+export const getSearchRepo = dispatch => async repo => {
   const url = API_GITHUB + `/search/repositories?q=${repo}`
 
   dispatch({

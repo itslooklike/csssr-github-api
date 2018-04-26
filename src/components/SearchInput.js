@@ -1,13 +1,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import debounce from 'lodash.debounce'
+// import debounce from 'lodash.debounce'
 import Button from 'muicss/lib/react/button'
 import Input from 'muicss/lib/react/input'
 import Panel from 'muicss/lib/react/panel'
 import Option from 'muicss/lib/react/option'
 import Select from 'muicss/lib/react/select'
 import SearchResultList from './SearchResultList'
+import Suggest from './Suggest'
 import Paginator from './Paginator'
 import * as A from '../actions'
 import * as S from '../selectors'
@@ -24,17 +25,17 @@ class SearchInput extends React.Component {
   }
 
   onChange(evt, type) {
-    const { setUserName, setRepoName, searchUser, searchRepo } = this.props
+    const { setUserName, setRepoName, getSearchUser, getSearchRepo } = this.props
     const { value } = evt.target
-    const timeout = 500
+    // const timeout = 500
 
     if (type === 'user') {
       setUserName(value)
-      searchUser(value)
+      getSearchUser(value)
       // debounce(() => searchUser(value), timeout)
     } else if (type === 'repo') {
       setRepoName(value)
-      searchRepo(value)
+      getSearchRepo(value)
       // debounce(() => searchRepo(value), timeout)
     }
   }
@@ -51,11 +52,13 @@ class SearchInput extends React.Component {
   render() {
     const { peerPageAmount } = this.state
     const { userName, repoName, getIssues } = this.props
-    const { fetching, data, pagination } = this.props.issues
+    const { fetching, data: issuesData, pagination } = this.props.issues
+    const { data: userSearchData } = this.props.searchUser
     const isPagNotEmpty = Object.keys(pagination).length > 0
 
     return (
       <div>
+        {userSearchData && <Suggest data={userSearchData} />}
         <Panel>
           <form onSubmit={evt => this.onSubmit(evt, getIssues, userName, repoName, peerPageAmount)}>
             <div>
@@ -97,7 +100,7 @@ class SearchInput extends React.Component {
 
         {isPagNotEmpty && <Paginator peerPageAmount={peerPageAmount} />}
 
-        {data && <SearchResultList data={data} />}
+        {issuesData && <SearchResultList data={issuesData} />}
       </div>
     )
   }
@@ -110,8 +113,8 @@ SearchInput.propTypes = {
   setUserName: PropTypes.func,
   setRepoName: PropTypes.func,
   getIssues: PropTypes.func,
-  searchUser: PropTypes.func,
-  searchRepo: PropTypes.func,
+  getSearchUser: PropTypes.func,
+  getSearchRepo: PropTypes.func,
 }
 
 const mapState = state => ({
@@ -119,14 +122,15 @@ const mapState = state => ({
   repoName: S.repoName(state),
   issues: S.issues(state),
   pagination: S.pagination(state),
+  searchUser: S.searchUser(state),
 })
 
 const mapDispatch = dispatch => ({
   setUserName: A.setUserName(dispatch),
   setRepoName: A.setRepoName(dispatch),
   getIssues: A.getIssues(dispatch),
-  searchUser: A.searchUser(dispatch),
-  searchRepo: A.searchRepo(dispatch),
+  getSearchUser: A.getSearchUser(dispatch),
+  getSearchRepo: A.getSearchRepo(dispatch),
 })
 
 export default connect(mapState, mapDispatch)(SearchInput)
