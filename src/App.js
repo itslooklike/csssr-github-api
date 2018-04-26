@@ -6,10 +6,13 @@ import { BrowserRouter } from 'react-router-dom'
 import createHistory from 'history/createBrowserHistory'
 import { ConnectedRouter, routerMiddleware } from 'react-router-redux'
 import { createLogger } from 'redux-logger'
+import { whyDidYouUpdate } from 'why-did-you-update'
 
 import PageMain from './containers/PageMain'
 import reducers from './reducers'
 import './index.css'
+
+whyDidYouUpdate(React)
 
 const history = createHistory()
 const historyMiddleware = routerMiddleware(history)
